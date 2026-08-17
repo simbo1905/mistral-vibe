@@ -131,6 +131,18 @@ DEFAULT_MODELS = [
         cached_input_price=0.01,
     ),
     ModelConfig(
+        name="zai-glm-5-2",
+        provider="mistral",
+        alias="zai-glm-5-2",
+        temperature=0.2,
+        input_price=1.19,
+        output_price=3.74,
+        cached_input_price=0.119,
+        thinking="off",
+        supports_images=False,
+        auto_compact_threshold=800_000,
+    ),
+    ModelConfig(
         name="devstral",
         provider="llamacpp",
         alias="local",
