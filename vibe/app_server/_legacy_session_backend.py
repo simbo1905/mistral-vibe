@@ -108,7 +108,7 @@ from vibe.app_server.protocol import (
 from vibe.core.config.orchestrator import ConfigOrchestrator
 from vibe.core.config.vibe_schema import VibeConfigSchema
 from vibe.core.git.worktree import ManagedWorktree, PreparedWorktree
-from vibe.core.session.session_lease import SessionBusyError
+from vibe.core.session.session_lease import SessionBusyError, SessionRegistryBusyError
 from vibe.core.tools.connectors.connector_registry import (
     ConnectorAuthAction,
     ConnectorCatalogEntry,
@@ -1117,7 +1117,7 @@ class LegacySessionBackendHost:
     async def _invoke[ResultT](operation: Awaitable[ResultT]) -> ResultT:
         try:
             return await operation
-        except SessionBusyError as exc:
+        except (SessionBusyError, SessionRegistryBusyError) as exc:
             raise SessionBackendError(ProtocolErrorCode.CONFLICT, str(exc)) from exc
         except RequestFailure as exc:
             raise SessionBackendError(exc.code, str(exc), exc.data) from exc

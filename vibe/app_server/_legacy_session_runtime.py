@@ -84,7 +84,7 @@ from vibe.core.agent_loop import AgentLoop
 from vibe.core.git.errors import GitError
 from vibe.core.git.worktree import PreparedWorktree
 from vibe.core.session import last_session_pointer
-from vibe.core.session.session_lease import SessionBusyError
+from vibe.core.session.session_lease import SessionBusyError, SessionRegistryBusyError
 from vibe.core.types import (
     BackgroundWorkEvent,
     SessionTitleUpdatedEvent,
@@ -401,7 +401,7 @@ class LegacySessionRuntimeController:
                         str(exc),
                         data={"harnessCode": "invalid_migration_source"},
                     ) from exc
-                except SessionBusyError as exc:
+                except (SessionBusyError, SessionRegistryBusyError) as exc:
                     raise RequestFailure(ProtocolErrorCode.CONFLICT, str(exc)) from exc
                 except RequestFailure:
                     raise
